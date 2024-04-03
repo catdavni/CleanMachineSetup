@@ -1,0 +1,4 @@
+[submodule "winget_install"]
+	path = winget_install
+	url = https://github.com/asheroto/winget-install.git
+	branch = master
