@@ -11,3 +11,6 @@ scoop install ripgrep
 scoop install winmerge
 scoop install youtubedownloader
 scoop install rapidee
+
+scoop bucket add mentei https://github.com/den-mentiei/scoop-bucket.git
+scoop install cffexplorer

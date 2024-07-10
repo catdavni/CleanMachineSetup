@@ -14,6 +14,11 @@ winget install Gyroflow --accept-source-agreements
 winget install MediaInfo --id 9NK81654HHV5 --accept-source-agreements
 winget install NuGet Package Explorer -s msstore --accept-package-agreements
 
+# COMMAND LINE EXTENSIONS
+winget install clink
+winget install JanDeDobbeleer.OhMyPosh
+
+
 # DISABLED
 <#
 winget install Soundly.Soundly  --accept-package-agreements
@@ -24,8 +29,10 @@ winget install Vivaldi.Vivaldi
 
 # SPECIFIC
 winget install Nvidia.GeForceExperience
+winget install BinaryFortress.DisplayFusion
 winget install Samsung.DeX
 winget install Samsung Gallery -s msstore --accept-package-agreements
+winget install --id the-sz.CPUGrabEx # cpu load test
 <#
 
 #>
