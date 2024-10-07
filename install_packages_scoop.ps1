@@ -14,3 +14,8 @@ scoop install rapidee
 
 scoop bucket add mentei https://github.com/den-mentiei/scoop-bucket.git
 scoop install cffexplorer
+
+# pwsh
+scoop install zoxide
+scoop install fzf
+scoop install fd
