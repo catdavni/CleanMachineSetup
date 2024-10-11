@@ -1,3 +1,6 @@
+# fast access to profile script
+$myconfig = $MyInvocation.MyCommand.Path
+
 # zoxide
 Invoke-Expression (& { (zoxide init powershell | Out-String) })
 
@@ -7,14 +10,20 @@ oh-my-posh init pwsh --config "$env:POSH_THEMES_PATH/kali.omp.json" | Invoke-Exp
 # fd
 # find files
 function f {
-    fd --absolute-path --hidden --no-ignore --ignore-case $args | fzf | % { Set-Clipboard -Value $_ }
+    $filePath = fd --absolute-path --hidden --no-ignore --ignore-case $args | fzf 
+    if ($filePath.Count -eq 1) {
+        Set-Clipboard -Value $filePath
+        return $filePath
+    }
+    else {
+        echo "Eroor: multiple files selected: " $filePath
+    }
 }
 
-# find folders
-function ff {
+# find directories
+function d {
     fd --absolute-path --hidden --no-ignore --ignore-case --type dir $args | fzf | % { Set-Clipboard -Value $_ }
 }
-
 
 # pwsh
 Set-PSReadLineOption -PredictionViewStyle ListView
@@ -53,3 +62,25 @@ function OnViModeChange {
     }
 }
 Set-PSReadLineOption -ViModeIndicator Script -ViModeChangeHandler $Function:OnViModeChange
+
+### functions
+function getDir {
+    param(
+        [Parameter(ValueFromPipeline = $true)]
+        [string]$path
+    )
+
+    return Split-Path -Parent $path
+}
+
+function startDir {
+    param(
+        [Parameter(ValueFromPipeline = $true)]
+        [string]$path
+    )
+
+    start $path
+}
+
+
+. "$PSScriptRoot\pwsh_process_tools.ps1"
