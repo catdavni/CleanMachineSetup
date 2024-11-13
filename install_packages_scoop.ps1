@@ -18,4 +18,5 @@ scoop install cffexplorer
 # pwsh
 scoop install zoxide
 scoop install fzf
+scoop install psfzf
 scoop install fd

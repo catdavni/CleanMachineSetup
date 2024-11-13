@@ -28,20 +28,8 @@ function d {
 # pwsh
 Set-PSReadLineOption -PredictionViewStyle ListView
 Set-PSReadLineOption -PredictionSource HistoryAndPlugin 
-Set-PSReadLineOption -MaximumHistoryCount 500
 Set-PSReadLineOption -EditMode Vi
-Set-PSReadLineKeyHandler -Chord Ctrl+y -Function Redo
 
-# fzf search
-function enableFzfCommandHistory {
-    $command = Get-Content (Get-PSReadlineOption).HistorySavePath | Select-Object -Unique | fzf --tac
-    [Microsoft.PowerShell.PSConsoleReadLine]::Insert($command)
-}
-
-Set-PSReadLineKeyHandler -Chord Ctrl+r -ScriptBlock { enableFzfCommandHistory } -ViMode Insert
-Set-PSReadLineKeyHandler -Chord Ctrl+r -ScriptBlock { enableFzfCommandHistory } -ViMode Command
-
-# vim clipboard
 function yankContentToClipboard {
     $inputBuffer = ""
     $cursorPosition = 0
@@ -62,6 +50,9 @@ function OnViModeChange {
     }
 }
 Set-PSReadLineOption -ViModeIndicator Script -ViModeChangeHandler $Function:OnViModeChange
+
+#psfzf | OVERRIDES VIM MAPPINGS SO SHOULD BE AFTER VIM SETUP
+Set-PsFzfOption -PSReadlineChordProvider 'Ctrl+]' -PSReadlineChordReverseHistory 'Ctrl+r'
 
 ### functions
 function getDir {
