@@ -55,18 +55,31 @@ nmap <leader>su :action Unsplit<CR>
 " editing
 nmap == :action CommentByLineComment<CR>
 vmap == :action CommentByLineComment<CR>
+
+" redo
+nnoremap U <C-r>
+
+" cut line to clipboard
+nnoremap X "+dd
+
 " delete without copying to clipboard
-nnoremap dd \"_dd
-vnoremap dd \"_dd
+nnoremap D "_dd
+vnoremap D "_dd
+nnoremap dd "_d_
+vnoremap dd "_d_
 
-nnoremap d \"_d
-vnoremap d \"_d
+nnoremap d "_d
+vnoremap d "_d
 
-nnoremap S \"_S
-nnoremap s \"_s
+nnoremap S "_S
+nnoremap s "_s
 
-vnoremap S \"_S
-vnoremap s \"_s
+vnoremap S "_S
+vnoremap s "_s
+
+nnoremap C "_C
+vnoremap C "_C
+vnoremap c "_c
 
 " cs"' - change surrounding " to '
 " ds{surrounding} - delete {surrounding}
