@@ -42,6 +42,8 @@ nmap <leader>c :action CloseContent<CR>
 nmap <leader>C :action CloseAllEditorsButActive<CR>
 nmap <S-l> :tabn<CR>
 nmap <S-h> :tabp<CR>
+nmap <leader>u <C-u>
+nmap <leader>d <C-d>
 
 " folding
 nmap <leader>fc :action CollapseAllRegions<CR>
@@ -57,7 +59,7 @@ nmap == :action CommentByLineComment<CR>
 vmap == :action CommentByLineComment<CR>
 
 " redo
-nnoremap U <C-r>
+nmap U <C-r>
 
 " cut line to clipboard
 nnoremap X "+dd
@@ -80,6 +82,8 @@ vnoremap s "_s
 nnoremap C "_C
 vnoremap C "_C
 vnoremap c "_c
+
+xnoremap p "_dP
 
 " cs"' - change surrounding " to '
 " ds{surrounding} - delete {surrounding}
