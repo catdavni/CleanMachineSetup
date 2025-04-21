@@ -1,0 +1,137 @@
+(defsrc
+  esc
+  grv    1    2    3    4    5    6    7    8    9    0    -    =    bspc
+  tab    q    w    e    r    t    y    u    i    o    p    [    ]    \
+  caps    a    s    d    f    g    h    j    k    l    ;    '    ret
+  lsft    z    x    c    v    b    n    m    ,    .    /    rsft
+  lctl    lmet    lalt    spc    ralt    rmet    rctl
+)
+
+(defcfg
+  process-unmapped-keys yes
+)
+
+(defvar
+  tt 130
+  ht 150
+)
+
+;; LAYER-SWITCH-ALIASES
+(defalias
+    go-insert (layer-switch insert)
+    go-nav (layer-switch navigation)
+    go-os (layer-switch os_win)
+
+    navOrSft (tap-hold $tt $ht (layer-switch navigation) lsft)
+    insOrNop (tap-hold $tt $ht (layer-switch insert) nop0)
+    navOrNop (tap-hold $tt $ht (layer-switch navigation) nop0)
+)
+
+;; GENERAL ALIASES
+(defalias
+  undo C-z
+  redo C-y
+  copy C-c
+  paste C-v
+  cut C-x
+  save C-s
+)
+
+(defchords os 100
+  (j  ) j
+  (  k) k
+  (j k) (layer-switch os_win)
+)
+
+(defalias
+  osJ (chord os j)
+  osK (chord os k)
+)
+
+(deflayer insert
+  esc
+  grv    1    2    3    4    5    6    7    8    9    0    -    =    bspc
+  tab    q    w    e    r    t    y    u    i    o    p    [    ]    \
+  caps    a    s    d    f    g    h    @osJ    @osK    l    ;    '    ret
+  @navOrSft    z    x    c    v    b    n    m    ,    .    /    rsft
+  lctl    lmet    lalt   spc    ralt    rmet    rctl
+)
+
+(deflayer navigation
+  @go-insert
+  grv    XX    XX   XX     end    XX    XX    XX    XX    XX    home    XX    XX    bspc
+  tab    XX    @next-wordN    @end-wordN    @redo    XX    @copy    @undo    @insert    @new-line    @paste    XX    XX    XX
+  XX    @append    @substitute    @delete    XX    XX    left    down    up    right    XX    XX    @return
+  @insOrNop    XX    @cutN    @changeN    @visOr    @start-wordN    XX    XX    XX    XX    XX    @insOrNop
+  lctl    lmet    lalt   spc    ralt    rmet    rctl
+)
+
+;; NAVIGATION LAYER ALIASES
+(defalias
+  end-wordN C-right
+  start-wordN C-left
+  next-wordN (macro @end-wordN @end-wordN @start-wordN)
+  append (fork @go-insert (multi end @go-insert) (nop0))
+  substitute (fork s (multi (macro home S-end C-x) @go-insert) (nop0))
+  delete (fork del (macro home S-end del) (nop0))
+  insert (fork @go-insert (multi home @go-insert) (nop0))
+  line-above (multi (macro (unmod nop0) 50 home 10 ret 10 up) @go-insert)
+  line-below (multi (macro 10 end 10 ret) @go-insert)
+  new-line (fork @line-below @line-above (nop0))
+  return (multi ret @go-insert)
+  cutN (fork (macro S-right @cut) (macro home S-end C-x) (nop0))
+  changeN (fork c (multi (macro S-end C-x) @go-insert) (nop0))
+  visOr (fork (layer-switch visual) (multi (layer-switch visual) (macro home S-end)) (nop0))
+)
+
+(deflayer visual
+  @go-insert
+  XX    XX    XX    XX    @end-lineV    XX    XX    XX    XX    XX    @start-lineV    XX    XX    bspc
+  XX    XX    @next-wordV    @end-wordV    @redo    XX    @copy    @undo    @insert    @new-line    @paste    XX    XX    XX
+  XX    @append    @substitute    @delete    XX    XX    @leftV    @downV    @upV    @rightV    XX    XX    @return
+  @insOrNop    XX    @cut    @changeV    @navOrNop    @start-wordV    XX    XX    XX    XX    XX    @insOrNop
+  lctl    lmet   lalt    spc    ralt    rmet    rctl
+)
+
+;; VISUAL LAYER ALIASES
+(defalias
+  end-wordV C-S-right
+  start-wordV C-S-left
+  end-lineV S-end
+  start-lineV S-home
+  next-wordV (macro @end-wordV @end-wordV @start-wordV)
+  leftV S-left
+  downV S-down
+  upV S-up
+  rightV S-right
+  exit-nav (multi left @go-nav)
+  changeV (fork (multi bspc @go-insert) (multi (macro S-end C-x) @go-insert) (nop0))
+)
+
+(deflayer os_win
+  @go-insert
+  XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    @inc-size    @dec-size    XX
+  tab    @quitOs    @windowOs    @explorerOs    @redo    XX    @copy    @undo    XX    XX    @paste    XX    XX    XX
+  caps    XX    @saveOs    @delOs    @findOs    XX    XX    XX    XX    @languageOs    XX    XX    @return
+  @navOrNop    XX    XX    @cancelOs    XX    XX    XX    XX    XX    XX    XX    @navOrNop
+  lctl    lmet    lalt   @go-insert    ralt    rmet    rctl
+)
+
+;; OS LAYER ALIASES
+(defalias
+  dec-size C--
+  inc-size C-=
+  save-as C-S-s
+  saveOs (fork @save @save-as (nop0))
+  quitOs A-F4
+  cancelOs C-c
+  languageOs M-spc
+  next-window A-tab
+  prev-window A-S-tab
+  windowOs (fork @next-window @prev-window (nop0))
+  delOs (fork del S-del (nop0))
+  find (multi @go-insert C-f)
+  find-all (multi @go-insert C-S-f)
+  findOs (fork @find @find-all (nop0))
+  explorerOs (multi @go-insert M-e)
+)
