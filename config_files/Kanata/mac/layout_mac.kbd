@@ -41,6 +41,16 @@
   save M-s
 )
 
+(deflayer insert
+  esc
+  grv    1    2    3    4    5    6    7    8    9    0    -    =    bspc
+  tab    q    w    e    r    t    y    u    i    o    p    [    ]    \
+  caps    a    @insS    @insD    @insF    g    h    @osJ    @osK    @insL    ;    '    ret
+  @navOrSft    z    x    c    v    b    n    m    ,    .    /    rsft
+  lctl    lmet    lalt   spc    ralt    rmet    rctl
+)
+
+;; INSERT LAYER ALIASES
 (defchords os 100
   (j  ) j
   (  k) k
@@ -48,17 +58,12 @@
 )
 
 (defalias
-  osJ (chord os j)
-  osK (chord os k)
-)
-
-(deflayer insert
-  esc
-  grv    1    2    3    4    5    6    7    8    9    0    -    =    bspc
-  tab    q    w    e    r    t    y    u    i    o    p    [    ]    \
-  caps    a    s    d    f    g    h    @osJ    @osK    l    ;    '    ret
-  @navOrSft    z    x    c    v    b    n    m    ,    .    /    rsft
-  lctl    lmet    lalt   spc    ralt    rmet    rctl
+  osJ (tap-hold 200 300 (chord os j) met)
+  osK (tap-hold 200 300 (chord os k) alt)
+  insL (tap-hold 200 300 _ lctl)
+  insF (tap-hold 200 300 _ lmet)
+  insD (tap-hold 200 300 _ lalt)
+  insS (tap-hold 200 300 _ rctl)
 )
 
 (deflayer navigation
@@ -77,7 +82,7 @@
   next-wordN (macro @end-wordN @end-wordN @start-wordN)
   append (fork @go-insert (multi end @go-insert) (nop0))
   substitute (fork s (multi (macro home S-end M-x) @go-insert) (nop0))
-  delete (fork del (macro home S-end del) (nop0))
+  delete (fork del (macro home S-end del bspc) (nop0))
   insert (fork @go-insert (multi home @go-insert) (nop0))
   line-above (multi (macro (unmod nop0) 50 home 10 ret 10 up) @go-insert)
   line-below (multi (macro 10 end 10 ret) @go-insert)
@@ -129,7 +134,7 @@
   saveOs (fork @save @save-as (nop0))
   quitOs (fork M-S-w M-q (nop0))
   cancelOs C-c
-  languageOs C-spc
+  languageOs (multi @go-insert C-spc)
   next-window M-grv
   prev-window M-S-grv
   windowOs (fork @next-window @prev-window (nop0))

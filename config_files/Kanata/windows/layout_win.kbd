@@ -1,14 +1,19 @@
+;; MAC FN KEY IS MAPPED TO COMMAND KEY SO IT BEHAVES AS rmet
 (defsrc
   esc
   grv    1    2    3    4    5    6    7    8    9    0    -    =    bspc
   tab    q    w    e    r    t    y    u    i    o    p    [    ]    \
   caps    a    s    d    f    g    h    j    k    l    ;    '    ret
   lsft    z    x    c    v    b    n    m    ,    .    /    rsft
-  lctl    lmet    lalt    spc    ralt    rmet    rctl
+  rmet    lctl    lalt    lmet   spc    rctl    ralt
 )
+;; PARALLELS MAP ralt as lctl+ralt WHICH CAUSES CONFLICT WITH lctl
+;; SO TO AVOID CONFLICTS, MAP lctl AS rctl WHICH DOESN'T EXIST IN THE REAL LAYOUT
 
 (defcfg
-  process-unmapped-keys yes
+;; prevent original key to be sent along with mapped ones
+;; fn+f should be rctl+f, not rctl+met(initial for fn) + f
+  process-unmapped-keys no
 )
 
 (defvar
@@ -37,6 +42,16 @@
   save C-s
 )
 
+(deflayer insert
+  esc
+  grv    1    2    3    4    5    6    7    8    9    0    -    =    @insBspc
+  tab    q    w    e    r    t    y    u    i    o    p    [    ]    \
+  caps    a    @insS    @insD    @insF    g    h    @osJ    @osK    @insL    ;    '    ret
+  @navOrSft    z    x    c    v    b    n    m    ,    .    /    rsft
+  rctl    rctl    lalt   lmet    spc    rctl    rctl
+)
+
+;; INSERT LAYER ALIASES
 (defchords os 100
   (j  ) j
   (  k) k
@@ -44,17 +59,13 @@
 )
 
 (defalias
-  osJ (chord os j)
-  osK (chord os k)
-)
-
-(deflayer insert
-  esc
-  grv    1    2    3    4    5    6    7    8    9    0    -    =    bspc
-  tab    q    w    e    r    t    y    u    i    o    p    [    ]    \
-  caps    a    s    d    f    g    h    @osJ    @osK    l    ;    '    ret
-  @navOrSft    z    x    c    v    b    n    m    ,    .    /    rsft
-  lctl    lmet    lalt   spc    ralt    rmet    rctl
+  osJ (tap-hold 200 300 (chord os j) lctl)
+  osK (tap-hold 200 300 (chord os k) lalt)
+  insL (tap-hold 200 300 l rmet)
+  insF (tap-hold 200 300 f lctl)
+  insD (tap-hold 200 300 d lalt)
+  insS (tap-hold 200 300 s lmet)
+  insBspc (fork bspc (multi (release-key lctl) (release-key rctl) del) (lctl rctl)) ;; one time delete
 )
 
 (deflayer navigation
@@ -63,7 +74,7 @@
   tab    XX    @next-wordN    @end-wordN    @redo    XX    @copy    @undo    @insert    @new-line    @paste    XX    XX    XX
   XX    @append    @substitute    @delete    XX    XX    left    down    up    right    XX    XX    @return
   @insOrNop    XX    @cutN    @changeN    @visOr    @start-wordN    XX    XX    XX    XX    XX    @insOrNop
-  lctl    lmet    lalt   spc    ralt    rmet    rctl
+  rctl    rctl    lalt   lmet    spc    rctl    rctl
 )
 
 ;; NAVIGATION LAYER ALIASES
@@ -73,7 +84,7 @@
   next-wordN (macro @end-wordN @end-wordN @start-wordN)
   append (fork @go-insert (multi end @go-insert) (nop0))
   substitute (fork s (multi (macro home S-end C-x) @go-insert) (nop0))
-  delete (fork del (macro home S-end del) (nop0))
+  delete (fork del (macro home S-end del bspc) (nop0))
   insert (fork @go-insert (multi home @go-insert) (nop0))
   line-above (multi (macro (unmod nop0) 50 home 10 ret 10 up) @go-insert)
   line-below (multi (macro 10 end 10 ret) @go-insert)
@@ -90,7 +101,7 @@
   XX    XX    @next-wordV    @end-wordV    @redo    XX    @copy    @undo    @insert    @new-line    @paste    XX    XX    XX
   XX    @append    @substitute    @delete    XX    XX    @leftV    @downV    @upV    @rightV    XX    XX    @return
   @insOrNop    XX    @cut    @changeV    @navOrNop    @start-wordV    XX    XX    XX    XX    XX    @insOrNop
-  lctl    lmet   lalt    spc    ralt    rmet    rctl
+  rctl    rctl    lalt    lmet    spc    rctl    rctl
 )
 
 ;; VISUAL LAYER ALIASES
@@ -114,7 +125,7 @@
   tab    @quitOs    @windowOs    @explorerOs    @redo    XX    @copy    @undo    XX    XX    @paste    XX    XX    XX
   caps    XX    @saveOs    @delOs    @findOs    XX    XX    XX    XX    @languageOs    XX    XX    @return
   @navOrNop    XX    XX    @cancelOs    XX    XX    XX    XX    XX    XX    XX    @navOrNop
-  lctl    lmet    lalt   @go-insert    ralt    rmet    rctl
+  rctl    rctl    lalt   lmet    @go-insert    rctl    rctl
 )
 
 ;; OS LAYER ALIASES
