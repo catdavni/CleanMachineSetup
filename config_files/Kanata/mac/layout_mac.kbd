@@ -25,6 +25,8 @@
     go-insert (layer-switch insert)
     go-nav (layer-switch navigation)
     go-os (layer-switch os_mac)
+    
+    go-diacritics (multi ralt (layer-while-held diacritics))
 
     navOrSft (tap-hold $tt $ht (layer-switch navigation) lsft)
     insOrNop (tap-hold $tt $ht (layer-switch insert) nop0)
@@ -43,7 +45,7 @@
 
 (deflayer insert
   esc
-  grv    1    2    3    4    5    6    7    8    9    0    -    =    bspc
+  grv    1    2    3    4    5    6    7    8    9    0    -    =    @insBspc
   tab    q    w    e    r    t    y    u    i    o    p    [    ]    \
   caps    a    @insS    @insD    @insF    g    h    @osJ    @osK    @insL    ;    '    ret
   @navOrSft    z    x    c    v    b    n    m    ,    .    /    rsft
@@ -51,7 +53,7 @@
 )
 
 ;; INSERT LAYER ALIASES
-(defchords os 100
+(defchords os 50
   (j  ) j
   (  k) k
   (j k) (layer-switch os_mac)
@@ -59,11 +61,12 @@
 
 (defalias
   osJ (tap-hold 200 300 (chord os j) met)
-  osK (tap-hold 200 300 (chord os k) alt)
+  osK (tap-hold 200 300 (chord os k) @go-diacritics)
   insL (tap-hold 200 300 _ lctl)
   insF (tap-hold 200 300 _ lmet)
-  insD (tap-hold 200 300 _ lalt)
+  insD (tap-hold 200 300 _ @go-diacritics)
   insS (tap-hold 200 300 _ rctl)
+  insBspc (fork bspc (multi (release-key alt) del) (alt))
 )
 
 (deflayer navigation
@@ -145,9 +148,27 @@
   explorerOs (multi @go-insert A-e)
 )
 
+;; DIACRITICS LAYER
+(deflayer diacritics
+  esc
+  grv    1    2    3    4    5    6    7    8    9    0    -    =    bspc
+  tab    q    w    @acute    r    t    y    u    @acute    o    p    [    ]    \
+  caps    a    s    d    f    g    h    j    k    l    ;    '    ret
+  lsft    z    x    c    v    b    @tilde    m    ,    .    /    rsft
+  lctl    lmet    lalt    spc    ralt    rmet    rctl
+)
+
+(defalias
+  acute (unicode ́)   ;; U+0301 COMBINING ACUTE ACCENT
+  tilde (unicode ̃)   ;; U+0303 COMBINING TILDE
+  ;; diaer (unicode ̈)   ;; U+0308 COMBINING DIAERESIS
+)
+
+
 ;; DISABLE LAYERS WHILE PARALLELS RUNNING
 (defvirtualkeys
   com.parallels.desktop.console (layer-while-held default)
+  com.blackmagic-design.DaVinciResolve (layer-while-held default)
 )
 
 (deflayer default

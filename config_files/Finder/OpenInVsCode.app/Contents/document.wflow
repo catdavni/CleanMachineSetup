@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>AMApplicationBuild</key>
-	<string>528</string>
+	<string>533</string>
 	<key>AMApplicationVersion</key>
 	<string>2.10</string>
 	<key>AMDocumentVersion</key>
@@ -85,7 +85,7 @@ open -n -b "com.microsoft.VSCode" --args "$finderPath"</string>
 				<key>Class Name</key>
 				<string>RunShellScriptAction</string>
 				<key>InputUUID</key>
-				<string>F919B91B-9A1D-44C6-8B27-7A7D12567E47</string>
+				<string>6DB2AE7C-7375-4281-9F60-F2E47BC653B1</string>
 				<key>Keywords</key>
 				<array>
 					<string>Shell</string>
@@ -95,9 +95,9 @@ open -n -b "com.microsoft.VSCode" --args "$finderPath"</string>
 					<string>Unix</string>
 				</array>
 				<key>OutputUUID</key>
-				<string>B5F3EAE2-BB73-4F9E-A711-5E66A0CAF08D</string>
+				<string>2AC22383-C22A-4E1D-BEB1-DFACD59BFFBF</string>
 				<key>UUID</key>
-				<string>2BB81393-C986-43A7-855A-89B26342843B</string>
+				<string>4F3D3F27-7CEB-4437-AF8D-2FCD33B0B0D9</string>
 				<key>UnlocalizedApplications</key>
 				<array>
 					<string>Automator</string>

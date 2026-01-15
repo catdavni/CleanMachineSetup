@@ -17,7 +17,7 @@
 )
 
 (defvar
-  tt 130
+  tt 20
   ht 150
 )
 
@@ -65,7 +65,7 @@
   insF (tap-hold 200 300 f lctl)
   insD (tap-hold 200 300 d lalt)
   insS (tap-hold 200 300 s lmet)
-  insBspc (fork bspc (multi (release-key lctl) (release-key rctl) del) (lctl rctl)) ;; one time delete
+  insBspc (fork bspc (multi (release-key rctl) (release-key lctl) del) (rctl lctl)) ;; one time delete
 )
 
 (deflayer navigation
@@ -136,7 +136,7 @@
   saveOs (fork @save @save-as (nop0))
   quitOs A-F4
   cancelOs C-c
-  languageOs M-spc
+  languageOs (multi @go-insert M-spc)
   next-window A-tab
   prev-window A-S-tab
   windowOs (fork @next-window @prev-window (nop0))

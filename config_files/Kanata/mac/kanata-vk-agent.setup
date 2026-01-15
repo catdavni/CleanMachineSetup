@@ -17,7 +17,7 @@ cat <<EOF | tee "$KANATA_VK_AGENT_PLIST" >/dev/null
       <string>-p</string>
       <string>4444</string>
       <string>-b</string>
-      <string>com.parallels.desktop.console</string>
+      <string>com.parallels.desktop.console,com.blackmagic-design.DaVinciResolve</string>
     </array>
 
     <key>RunAtLoad</key>
